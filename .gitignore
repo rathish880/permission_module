@@ -1,0 +1,15 @@
+.DS_Store
+.idea
+*.log
+tmp/
+
+bin/
+include/
+lib/
+lib64
+*.py[cod]
+*.egg
+build
+htmlcov
+pyvenv.cfg
+start.sh
