@@ -15,6 +15,7 @@ class Report(Base):
         TIMESTAMP(timezone=True), nullable=False, server_default=func.now()
     )
     reporter_group = Column(Text, nullable=False)
+    period = Column(Integer, nullable=False)
     details = Column(Text, nullable=False)
 
 

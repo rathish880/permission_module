@@ -68,14 +68,23 @@ async def post_report(
     """Create a new report with the current date time and details."""
     if Role.STUDENT not in user.roles:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+    if report_details.period <= 0:
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_ENTITY, "Period should be a positive integer"
+        )
     group = next(group for group in user.groups if Role.STUDENT.value in group.lower())
-    report = ReportDB(details=report_details.details, reporter_group=group)
+    report = ReportDB(
+        period=report_details.period,
+        details=report_details.details,
+        reporter_group=group,
+    )
     db.add(report)
     db.commit()
     report = Report(
         report_id=report.report_id,
         reported_on=report.reported_on,
         reporter_group=report.reporter_group,
+        period=report.period,
         details=report.details,
     )
     tasks.add_task(send_telegram_message, report)

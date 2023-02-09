@@ -7,6 +7,7 @@ from pydantic import BaseModel
 class ReportDetails(BaseModel):
     """Report details sent by user."""
 
+    period: int
     details: str
 
 
