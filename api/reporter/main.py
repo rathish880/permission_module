@@ -1,5 +1,5 @@
 """Contains routes for Reporter."""
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy import select
@@ -26,8 +26,8 @@ router = APIRouter(prefix="/reporter", tags=["reporter"])
     #    response_model=Report,
 )
 async def get_reports(
-    from_date: datetime | None = None,
-    to_date: datetime | None = None,
+    from_date: date | None = None,
+    to_date: date | None = None,
     user: User = Depends(get_user),
     db: SessionLocal = Depends(get_db),
 ) -> list[Report]:
@@ -40,7 +40,7 @@ async def get_reports(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
 
     if not from_date:
-        from_date = datetime.now(timezone.utc)
+        from_date = datetime.now(timezone.utc).date()
 
     if not to_date:
         to_date = from_date + timedelta(days=1)
