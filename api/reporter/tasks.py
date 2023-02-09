@@ -10,7 +10,7 @@ async def send_telegram_message(report: Report):
     """Send the report as a Telegram message."""
     group = report.reporter_group.replace("/", " ")[9:]
     text = (
-        f"<b>{group}</b>\n{report.details}\n\n"
+        f"<b>{group}</b>\nPeriod: {report.period}\n{report.details}\n\n"
         "Check reporter.aurcc.in for more information."
     )
     response = httpx.post(
