@@ -30,9 +30,11 @@ def get_db():
 
 async def get_user(token: HTTPAuthorizationCredentials = Depends(scheme)) -> User:
     """Get the user of the given token."""
+
     info = keycloak.introspect(token.credentials)
     if not info["active"]:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
     userinfo = keycloak.userinfo(token.credentials)
     user = User(
         user_id=info["sub"],

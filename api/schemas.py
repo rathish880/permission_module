@@ -12,6 +12,7 @@ class Role(StrEnum):
     STUDENT = "student"
     STAFF = "staff"
     TEACHER = "teacher"
+    HR = "hr"
 
     @classmethod
     def _missing_(cls, _role: str):

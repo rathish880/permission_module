@@ -17,6 +17,7 @@ class Report(ReportDetails):
     report_id: int
     reported_on: datetime
     reporter_group: str
+    period: int
     details: str
 
     class Config:
