@@ -1,7 +1,6 @@
 """Contains ORM models for dlapp"""
-from sqlalchemy import Boolean, Column, Identity, Integer, Text, func, null, true
+from sqlalchemy import Column, Identity, Integer, Text, func
 from sqlalchemy.dialects.postgresql import TIMESTAMP
-from urllib3.exceptions import TimeoutStateError
 
 from ..database import Base, engine
 
@@ -19,8 +18,8 @@ class Permission(Base):
     requested_on = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=func.now()
     )
-    head_approved = Column(Boolean, nullable=True)
-    dean_approved = Column(Boolean, nullable=True)
+    hod_status = Column(Text, nullable=True)
+    dean_status = Column(Text, nullable=True)
     approved_on = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default="epoch"
     )

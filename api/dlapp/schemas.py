@@ -14,6 +14,14 @@ class Designation(StrEnum):
     NON_TEACHING = "Non Teaching"
 
 
+class Status(StrEnum):
+    """Status of a Permission"""
+
+    APPROVED = "Approved"
+    DENIED = "Denied"
+    PENDING = "Pending"
+
+
 class PermissionDetails(BaseModel):
     """permission details sent by the user"""
 
@@ -25,16 +33,16 @@ class PermissionDetails(BaseModel):
 class Permission(BaseModel):
     """permission requested by the user"""
 
-    permission_id: Column[int]
-    user_name: Column[str]
-    user_group: Column[str]
-    permission_date: Column[datetime]
-    permission_time: Column[str]
-    requested_on: Column[datetime]
-    head_approved: Column[bool]
-    dean_approved: Column[bool]
-    approved_on: Column[datetime]
-    reason: Column[str]
+    permission_id: int
+    user_name: str
+    user_group: str
+    permission_date: datetime
+    permission_time: str
+    requested_on: datetime
+    hod_status: str
+    dean_status: str
+    approved_on: datetime
+    reason: str
 
     class Config:
         orm_mode = True
