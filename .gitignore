@@ -13,3 +13,6 @@ build
 htmlcov
 pyvenv.cfg
 start.sh
+api/dlapp/generate_report
+json_parser.py
+commands.sh

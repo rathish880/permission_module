@@ -13,7 +13,7 @@ def request_permission(permission_details, user, db, tasks):
     if Role.STAFF not in user.roles:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
-    if len(user.groups > 1):
+    if len(user.groups) > 1:
         for grp in user.groups:
             department = grp.split("/")[2]
             if department in departments:

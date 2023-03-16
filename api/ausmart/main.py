@@ -11,7 +11,7 @@ from .models import Report as ReportDB
 from .schemas import Report, ReportDetails
 from .tasks import send_telegram_message
 
-router = APIRouter(prefix="/reporter", tags=["reporter"])
+router = APIRouter(prefix="/ausmart", tags=["reporter"])
 
 
 @router.get(
