@@ -3,7 +3,6 @@ from datetime import datetime
 from enum import StrEnum
 
 from pydantic import BaseModel
-from sqlalchemy import Column
 
 
 class Designation(StrEnum):
@@ -14,12 +13,21 @@ class Designation(StrEnum):
     NON_TEACHING = "Non Teaching"
 
 
-class Status(StrEnum):
-    """Status of a Permission"""
+class DeanStatus(StrEnum):
+    """Dean status of a Permission"""
 
     APPROVED = "Approved"
     DENIED = "Denied"
     PENDING = "Pending"
+
+
+class HodStatus(StrEnum):
+    """HOD status of a Permission"""
+
+    DIRECT = "Direct"
+    DENIED = "Denied"
+    PENDING = "Pending"
+    FORWARD = "Forward"
 
 
 class PermissionDetails(BaseModel):
