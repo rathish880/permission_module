@@ -89,6 +89,23 @@ async def get_history(
     return result
 
 
+# delete permission by user before seen by Dean
+@router.delete(
+    "/user-permission",
+    responses={
+        status.HTTP_200_OK: {"description": "OK"},
+        status.HTTP_401_UNAUTHORIZED: {"description": "User is unauthorized"},
+    },
+)
+async def delete_user_permission(
+    permission_id: int,
+    user: User = Depends(get_user),
+    db: SessionLocal = Depends(get_db),
+):
+    result = history.delete_user_permission(permission_id, user, db)
+    return result
+
+
 # delete permission by HR
 @router.delete(
     "/delete-permission",
