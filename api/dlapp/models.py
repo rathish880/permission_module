@@ -1,7 +1,8 @@
 """Contains ORM models for dlapp"""
 from sqlalchemy import Column, Identity, Integer, Text, func
-from sqlalchemy.dialects.postgresql import TIMESTAMP
+from sqlalchemy.dialects.postgresql import TIMESTAMP, ENUM
 
+from .schemas import HodStatus, DeanStatus
 from ..database import Base, engine
 
 
@@ -18,8 +19,10 @@ class Permission(Base):
     requested_on = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=func.now()
     )
-    hod_status = Column(Text, nullable=True)
-    dean_status = Column(Text, nullable=True)
+    hod_status = Column(ENUM(*(status.value for status in HodStatus), name="HodStatus"))
+    dean_status = Column(
+        ENUM(*(status.value for status in DeanStatus), name="DeanStatus")
+    )
     approved_on = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default="epoch"
     )
