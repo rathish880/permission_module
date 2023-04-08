@@ -1,10 +1,11 @@
 """Contains the dependencies."""
-
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from keycloak import KeycloakOpenID
 
-from .database import Base, SessionLocal, engine
+from .database import Base, engine
+from sqlalchemy.orm import Session
+
 from .schemas import User
 from .settings import Settings
 
@@ -21,7 +22,7 @@ scheme = HTTPBearer()
 
 def get_db():
     """Get a database session."""
-    db = SessionLocal()
+    db = Session(engine)
     try:
         yield db
     finally:

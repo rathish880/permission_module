@@ -8,6 +8,8 @@ from .models import Permission as PermissionDB
 # from .tasks import send_notification
 from .schemas import Designation
 
+departments = ["CSE", "EEE", "ECE", "MECH", "S&H", "MBA"]
+
 
 def pending_requests(user, db):
     if Role.DEAN in user.roles:
@@ -15,19 +17,23 @@ def pending_requests(user, db):
             PermissionDB.head_status == HodStatus.FORWARD
             or PermissionDB.hod_status == HodStatus.DIRECT
         )
-        pending_requests = db.scalars(stmt).all()
+        pending_requests = db.execute(stmt).scalars().all()
         return pending_requests
 
+    # TODO: find group according to the parameter 'user'
     groups = [group for group in user.groups if Designation.HEADS.value in group]
 
-    print(user.groups)
-    print(groups)
     if len(groups) > 0:
-        department = groups[0].split("/")[2]
-        print(department)
-        stmt = select(PermissionDB).where(PermissionDB.user_group.like("%CSE%"))
-        print(stmt)
-        pending_requests = db.scalars(stmt).all()
+        for grp in groups:
+            dept = grp.split("/")[2]
+            if dept in departments:
+                department = dept
+                break
+
+        stmt = select(PermissionDB).where(
+            PermissionDB.user_group.like(f"%{department}%")
+        )
+        pending_requests = db.execute(stmt).scalars().all()
         return pending_requests
     else:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)

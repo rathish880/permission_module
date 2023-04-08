@@ -1,6 +1,6 @@
 """Contains ORM models for dlapp"""
 from sqlalchemy import Column, Identity, Integer, Text, func
-from sqlalchemy.dialects.postgresql import TIMESTAMP, ENUM
+from sqlalchemy.dialects.postgresql import TIMESTAMP, ENUM, UUID
 
 from .schemas import HodStatus, DeanStatus
 from ..database import Base, engine
@@ -12,7 +12,7 @@ class Permission(Base):
     __tablename__ = "permissions"
 
     permission_id = Column(Integer, Identity(always=True), primary_key=True)
-    user_name = Column(Text, nullable=False)
+    user_id = Column(UUID(as_uuid=True), nullable=False)
     user_group = Column(Text, nullable=False)
     permission_date = Column(TIMESTAMP(timezone=True), nullable=False)
     permission_time = Column(Text, nullable=False)
@@ -34,7 +34,7 @@ class UserInfo(Base):
 
     __tablename__ = "userinfo"
 
-    username = Column(Text, primary_key=True)
+    user_id = Column(UUID(as_uuid=True), primary_key=True)
     token = Column(Text)
 
 
