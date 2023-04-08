@@ -42,7 +42,7 @@ async def request_permission(
         status.HTTP_200_OK: {"description": "OK"},
         status.HTTP_401_UNAUTHORIZED: {"description": "User is unauthorized"},
     },
-    response_model=dict,
+    response_model=list,
 )
 async def pending_requests(
     user: User = Depends(get_user),
@@ -78,7 +78,7 @@ async def update_status(
         status.HTTP_200_OK: {"description": "OK"},
         status.HTTP_401_UNAUTHORIZED: {"description": "User is unauthorized"},
     },
-    response_model=dict,
+    response_model=list,
 )
 async def get_history(
     head: bool,  # head represents hod, unitOfficer, dean
@@ -96,6 +96,7 @@ async def get_history(
         status.HTTP_200_OK: {"description": "OK"},
         status.HTTP_401_UNAUTHORIZED: {"description": "User is unauthorized"},
     },
+    response_model=bool,
 )
 async def delete_user_permission(
     permission_id: int,
@@ -113,6 +114,7 @@ async def delete_user_permission(
         status.HTTP_200_OK: {"description": "OK"},
         status.HTTP_401_UNAUTHORIZED: {"description": "User is unauthorized"},
     },
+    response_model=bool,
 )
 async def delete_permission(
     permission_id: str,

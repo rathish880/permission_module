@@ -19,14 +19,14 @@ def get_history(head, user, db):
         group = next(group for group in user.groups if Designation.HEADS.value in group)
         department = group.split("/")[2]
         stmt = select(PermissionDB).where(
-            PermissionDB.user_group.in_(department)
+            PermissionDB.user_group.like(f"%{department}%")
             and PermissionDB.hod_status != HodStatus.PENDING
         )
         admin_history = db.scalars(stmt).all()
         return admin_history
 
     else:
-        stmt = select(PermissionDB).where(PermissionDB.user_name == user.name)
+        stmt = select(PermissionDB).where(PermissionDB.user_name == user.user_id)
         user_history = db.scalars(stmt).all()
         return user_history
 
@@ -40,7 +40,7 @@ def delete_permission(permission_id, user, db):
     )
     dean_status = db.scalars(stmt).first()
 
-    if dean_status != DeanStatus.APPROVED:
+    if dean_status != DeanStatus.PENDING:
         stmt = delete(PermissionDB).where(PermissionDB.permission_id == permission_id)
         db.execute(stmt)
         db.commit()
