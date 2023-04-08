@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 from sqlalchemy import select, update
+from sqlalchemy import or_, and_
 
 from ..schemas import Role
 from .schemas import HodStatus
@@ -14,13 +15,14 @@ departments = ["CSE", "EEE", "ECE", "MECH", "S&H", "MBA"]
 def pending_requests(user, db):
     if Role.DEAN in user.roles:
         stmt = select(PermissionDB).where(
-            PermissionDB.head_status == HodStatus.FORWARD
-            or PermissionDB.hod_status == HodStatus.DIRECT
+            or_(
+                PermissionDB.hod_status == HodStatus.FORWARD,
+                PermissionDB.hod_status == HodStatus.DIRECT,
+            )
         )
         pending_requests = db.execute(stmt).scalars().all()
         return pending_requests
 
-    # TODO: find group according to the parameter 'user'
     groups = [group for group in user.groups if Designation.HEADS.value in group]
 
     if len(groups) > 0:
@@ -31,7 +33,10 @@ def pending_requests(user, db):
                 break
 
         stmt = select(PermissionDB).where(
-            PermissionDB.user_group.like(f"%{department}%")
+            and_(
+                PermissionDB.user_group.like(f"%{department}%"),
+                PermissionDB.hod_status == HodStatus.PENDING,
+            )
         )
         pending_requests = db.execute(stmt).scalars().all()
         return pending_requests
@@ -48,7 +53,7 @@ def update_status(permission_id, permission_status, user, db):
         )
         db.execute(stmt)
         db.commit()
-    return True
+        return True
 
     groups = [group for group in user.groups if Designation.HEADS.value in group]
 

@@ -98,12 +98,12 @@ async def get_history(
     },
     response_model=bool,
 )
-async def delete_user_permission(
+async def user_delete_permission(
     permission_id: int,
     user: User = Depends(get_user),
     db: SessionLocal = Depends(get_db),
 ):
-    result = history.delete_user_permission(permission_id, user, db)
+    result = history.user_delete_permission(permission_id, user, db)
     return result
 
 
@@ -116,10 +116,10 @@ async def delete_user_permission(
     },
     response_model=bool,
 )
-async def delete_permission(
+async def hr_delete_permission(
     permission_id: str,
     user: User = Depends(get_user),
     db: SessionLocal = Depends(get_db),
 ):
-    result = history.delete_permission(permission_id, user, db)
+    result = history.hr_delete_permission(permission_id, user, db)
     return result

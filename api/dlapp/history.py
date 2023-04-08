@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 from sqlalchemy import select, delete
+from sqlalchemy import and_
 
 from ..schemas import Role
 
@@ -19,19 +20,21 @@ def get_history(head, user, db):
         group = next(group for group in user.groups if Designation.HEADS.value in group)
         department = group.split("/")[2]
         stmt = select(PermissionDB).where(
-            PermissionDB.user_group.like(f"%{department}%")
-            and PermissionDB.hod_status != HodStatus.PENDING
+            and_(
+                PermissionDB.user_group.like(f"%{department}%"),
+                PermissionDB.hod_status.in_([HodStatus.FORWARD, HodStatus.DENIED]),
+            )
         )
         admin_history = db.scalars(stmt).all()
         return admin_history
 
     else:
-        stmt = select(PermissionDB).where(PermissionDB.user_name == user.user_id)
+        stmt = select(PermissionDB).where(PermissionDB.user_id == user.user_id)
         user_history = db.scalars(stmt).all()
         return user_history
 
 
-def delete_permission(permission_id, user, db):
+def hr_delete_permission(permission_id, user, db):
     if Role.HR not in user.roles:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
 
@@ -49,7 +52,7 @@ def delete_permission(permission_id, user, db):
     return False
 
 
-def delete_user_permission(permission_id, user, db):
+def user_delete_permission(permission_id, user, db):
     if Role.STAFF not in user.roles:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
 
