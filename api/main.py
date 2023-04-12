@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .dependencies import get_user
 from .ausmart.main import router as reporter_router
-from .dlapp.main import router as dlapp_router
+from .dlapp.staff.main import router as dlapp_router
 from .schemas import User
 
 app = FastAPI(title="AURCC API")
@@ -14,6 +14,7 @@ origins = [
     "http://localhost",
     "http://localhost:3000",
     "http://172.17.2.228:3000",
+    "http://192.168.43.29:3000",
 ]
 
 app.add_middleware(

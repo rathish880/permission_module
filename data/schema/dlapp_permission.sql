@@ -7,7 +7,7 @@ CREATE TABLE permission(
     permission_date TIMESTAMPZ NOT NULL,
     permission_time TEXT NOT NULL,
     requested_on TIMESTAMPZ NOT NULL DEFAULT NOW(),
-    approved_on TIMESTAMPZ,
+    acted_on TIMESTAMPZ,
     reason TEXT NOT NULL
 );
 

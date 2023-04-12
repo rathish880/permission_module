@@ -4,14 +4,14 @@ from fastapi import APIRouter, BackgroundTasks, Depends, status
 from . import history
 from . import pending_request
 from . import permission
-from ..database import SessionLocal
-from ..dependencies import get_db, get_user
-from ..schemas import User
-from .schemas import PermissionDetails
+from ...database import SessionLocal
+from ...dependencies import get_db, get_user
+from ...schemas import User
+from .schemas import PermissionDetails, UpdateStatus
 
 # from .tasks import send_notification
 
-router = APIRouter(prefix="/dlapp", tags=["dlapp"])
+router = APIRouter(prefix="/dlapp/staff", tags=["dlapp"])
 
 
 # request permission
@@ -30,7 +30,6 @@ async def request_permission(
     tasks: BackgroundTasks = None,
 ) -> bool:
     """User request a permission"""
-
     result = permission.request_permission(permission_details, user, db, tasks)
     return result
 
@@ -62,12 +61,13 @@ async def pending_requests(
     response_model=bool,
 )
 async def update_status(
-    permission_id: int,
-    permission_status: str,
+    updateDetails: UpdateStatus,
     user: User = Depends(get_user),
     db: SessionLocal = Depends(get_db),
 ):
-    result = pending_request.update_status(permission_id, permission_status, user, db)
+    result = pending_request.update_status(
+        updateDetails.permission_id, updateDetails.permission_status, user, db
+    )
     return result
 
 
@@ -81,17 +81,17 @@ async def update_status(
     response_model=list,
 )
 async def get_history(
-    head: bool,  # head represents hod, unitOfficer, dean
+    designation: str,  # head represents hod, unitOfficer, dean
     user: User = Depends(get_user),
     db: SessionLocal = Depends(get_db),
 ):
-    result = history.get_history(head, user, db)
+    result = history.get_history(designation, user, db)
     return result
 
 
 # delete permission by user before seen by Dean
 @router.delete(
-    "/user-permission",
+    "/user-delete-permission",
     responses={
         status.HTTP_200_OK: {"description": "OK"},
         status.HTTP_401_UNAUTHORIZED: {"description": "User is unauthorized"},
@@ -109,7 +109,7 @@ async def user_delete_permission(
 
 # delete permission by HR
 @router.delete(
-    "/delete-permission",
+    "/hr-delete-permission",
     responses={
         status.HTTP_200_OK: {"description": "OK"},
         status.HTTP_401_UNAUTHORIZED: {"description": "User is unauthorized"},
@@ -117,7 +117,7 @@ async def user_delete_permission(
     response_model=bool,
 )
 async def hr_delete_permission(
-    permission_id: str,
+    permission_id: int,
     user: User = Depends(get_user),
     db: SessionLocal = Depends(get_db),
 ):

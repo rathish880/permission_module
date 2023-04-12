@@ -2,7 +2,7 @@
 
 import httpx
 
-from ..settings import Settings
+from ...settings import Settings
 from .schemas import Permission
 
 

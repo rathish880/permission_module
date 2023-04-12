@@ -1,5 +1,6 @@
 """Contains Pydantic schemas."""
 from datetime import datetime
+from datetime import date
 from enum import StrEnum
 
 from pydantic import BaseModel
@@ -38,18 +39,25 @@ class PermissionDetails(BaseModel):
     reason: str
 
 
+class UpdateStatus(BaseModel):
+    """update permission status by hod, unitOfficer, dean"""
+
+    permission_id: int
+    permission_status: str
+
+
 class Permission(BaseModel):
     """permission requested by the user"""
 
     permission_id: int
     user_name: str
     user_group: str
-    permission_date: datetime
+    permission_date: date
     permission_time: str
     requested_on: datetime
     hod_status: str
     dean_status: str
-    approved_on: datetime
+    acted_on: datetime
     reason: str
 
     class Config:
