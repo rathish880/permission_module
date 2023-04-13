@@ -1,4 +1,4 @@
-"""Contains ORM models for dlapp"""
+"""Contains ORM models for dlapp - staff"""
 from sqlalchemy import Column, Identity, Integer, Date, Text, func
 from sqlalchemy.dialects.postgresql import TIMESTAMP, ENUM, UUID
 
@@ -25,15 +25,6 @@ class Permission(Base):
     )
     acted_on = Column(TIMESTAMP(timezone=True), nullable=False, server_default="epoch")
     reason = Column(Text, nullable=False)
-
-
-class UserInfo(Base):
-    """Mapping of `userinfo` table"""
-
-    __tablename__ = "userinfo"
-
-    user_id = Column(UUID(as_uuid=True), primary_key=True)
-    token = Column(Text)
 
 
 Base.metadata.create_all(engine)

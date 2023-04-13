@@ -1,4 +1,4 @@
-"""Contains routes for DLAPP"""
+"""Contains routes for DLAPP staff"""
 from fastapi import APIRouter, BackgroundTasks, Depends, status
 
 from . import history

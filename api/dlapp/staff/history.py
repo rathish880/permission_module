@@ -71,11 +71,13 @@ def user_delete_permission(permission_id, user, db):
     if Role.STAFF not in user.roles:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
 
-        # stmt = select(PermissionDB.dean_status).where(
-        #     PermissionDB.permission_id == permission_id
-        # )
-        # dean_status = db.scalars(stmt).first()
-        #
+    # TODO: have to check whether this logic works as exepected
+
+    # stmt = select(PermissionDB.dean_status).where(
+    #     PermissionDB.permission_id == permission_id
+    # )
+    # dean_status = db.scalars(stmt).first()
+    #
     stmt = delete(PermissionDB).where(
         PermissionDB.permission_id == permission_id
         and PermissionDB.dean_status == DeanStatus.PENDING
