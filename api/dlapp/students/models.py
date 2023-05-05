@@ -27,4 +27,10 @@ class Permission(Base):
     reason = Column(Text, nullable=False)
 
 
+class UserInfo(Base):
+
+    __tablename__ = "user_info"
+    user_id = Column(UUID(as_uuid=True), nullable=False)
+    token = Column(Text, nullable=False)
+
 Base.metadata.create_all(engine)

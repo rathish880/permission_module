@@ -6,6 +6,7 @@ from datetime import datetime
 from ...schemas import Role
 from .schemas import HodStatus, DeanStatus
 from .models import Permission as PermissionDB
+from .models import UserInfo
 
 # from .tasks import send_notification
 from .schemas import Designation

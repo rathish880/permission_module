@@ -11,6 +11,13 @@ def get_history(user, db):
     if Role.STUDENT not in user.roles:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
+    # groups=["/Hostel/Boys","/Students/CSE/B.E/First Year"]
+    for grp in user.groups:
+        if (grp.split("/")[1] == "Hostel"):
+            break
+    else:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
     stmt = select(PermissionDB).where(PermissionDB.user_id == user.user_id)
     user_history = db.scalars(stmt).all()
     return user_history

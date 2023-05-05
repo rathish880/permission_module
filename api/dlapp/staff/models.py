@@ -26,5 +26,11 @@ class Permission(Base):
     acted_on = Column(TIMESTAMP(timezone=True), nullable=False, server_default="epoch")
     reason = Column(Text, nullable=False)
 
+class UserInfo(Base):
+    
+    __tablename__="user_info"
+    user_id = Column(UUID(as_uuid=True), nullable=False)
+    token = Column(Text, nullable=False)
+
 
 Base.metadata.create_all(engine)
